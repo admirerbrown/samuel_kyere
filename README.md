@@ -35,7 +35,7 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000).
 
-The local server intentionally runs without the GitHub Pages `/newPortfolio` prefix so files in `public/` load at paths such as `/project3.png`. The production build automatically uses `/newPortfolio` instead.
+The local server intentionally runs without the GitHub Pages `/samuel_kyere` prefix so files in `public/` load at paths such as `/project3.png`. The production build automatically uses `/samuel_kyere` instead.
 
 Stop the server with `Ctrl+C`.
 
@@ -94,7 +94,7 @@ The script will:
 5. Commit the generated changes as `Deploy latest portfolio build`.
 6. Push `gh-pages` to GitHub.
 
-The live site is: https://admirerbrown.github.io/newPortfolio/
+The live site is: https://admirerbrown.github.io/samuel_kyere/
 
 ## Troubleshooting
 
