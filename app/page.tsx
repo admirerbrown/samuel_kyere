@@ -4,6 +4,8 @@ const BASE_PATH = process.env.NODE_ENV === "production" ? "/newPortfolio" : "";
 
 const aiChatbotPreview = `${BASE_PATH}/ai_bot.png`;
 
+const liveTrainingPreview = `${BASE_PATH}/project3.png`;
+
 const dataSeedingPreview =
   "https://raw.githubusercontent.com/admirerbrown/automated_data_seeding/main/assets/architecture.png";
 
@@ -493,6 +495,74 @@ export default function Home() {
                     </a>
                     <a
                       href="https://drive.google.com/file/d/1WKuH7R5j5fHHXBaAp302QaRSE1Wpz2Ks/view?usp=sharing"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center rounded-lg border border-slate-700/70 bg-slate-900/70 px-4 py-2 text-sm font-semibold text-slate-200 transition hover:border-slate-500 hover:bg-slate-800"
+                    >
+                      Watch Demo
+                    </a>
+                  </div>
+                </div>
+              </article>
+
+              <article className="group order-first relative h-full overflow-hidden rounded-2xl border border-slate-700/70 bg-gradient-to-br from-slate-900/90 via-slate-900/70 to-zinc-950/90 p-4 shadow-[0_24px_90px_-40px_rgba(16,185,129,0.16)] transition duration-300 hover:-translate-y-1 hover:border-emerald-500/50 hover:bg-slate-900 glitch-card">
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(16,185,129,0.16),transparent_30%)]" />
+                <div className="relative flex h-full flex-col gap-2.5">
+                  <div className="overflow-hidden rounded-xl border border-slate-800/80 bg-slate-950/70">
+                    <img
+                      src={liveTrainingPreview}
+                      alt="Instructor workspace for the corporate live training platform"
+                      className="h-28 w-full object-cover transition duration-500 group-hover:scale-105"
+                    />
+                  </div>
+
+                  <div className="flex items-center justify-between gap-3">
+                    <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-emerald-400">
+                      REAL-TIME / LEARNING PLATFORM
+                    </span>
+                    <span className="rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[0.16em] text-emerald-300">
+                      WebSocket Systems
+                    </span>
+                  </div>
+
+                  <h3 className="text-[17px] font-semibold leading-snug tracking-tight text-white">
+                    Corporate live training platform
+                  </h3>
+
+                  <div className="grid gap-2 rounded-xl border border-slate-800/80 bg-slate-950/60 p-2.5 sm:grid-cols-2">
+                    <div>
+                      <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-500">
+                        Core stack
+                      </p>
+                      <ul className="mt-1 space-y-0.5 text-[13px] leading-5 text-slate-300">
+                        <li>• React + Vite frontend</li>
+                        <li>• Node.js + Express API</li>
+                        <li>• WebSockets + PostgreSQL</li>
+                      </ul>
+                    </div>
+                    <div>
+                      <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-500">
+                        Key capabilities
+                      </p>
+                      <ul className="mt-1 space-y-0.5 text-[13px] leading-5 text-slate-300">
+                        <li>• Instructor-led playback control</li>
+                        <li>• Late-join state recovery</li>
+                        <li>• Clock drift correction</li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  <div className="mt-auto flex flex-wrap items-center gap-2 pt-2">
+                    <a
+                      href="https://github.com/admirerbrown/coporate_live_training_platform"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center rounded-lg border border-emerald-600/60 bg-emerald-950/40 px-3 py-2 text-sm font-semibold text-emerald-200 transition hover:border-emerald-500 hover:bg-emerald-900/60"
+                    >
+                      View GitHub Repo
+                    </a>
+                    <a
+                      href="https://www.loom.com/share/9f5c7e9fcbf44673a7fc8e114ac44b4a"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center justify-center rounded-lg border border-slate-700/70 bg-slate-900/70 px-4 py-2 text-sm font-semibold text-slate-200 transition hover:border-slate-500 hover:bg-slate-800"
