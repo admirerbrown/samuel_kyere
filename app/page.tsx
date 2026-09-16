@@ -1,6 +1,6 @@
 "use client";
 
-const BASE_PATH = process.env.NODE_ENV === "production" ? "/newPortfolio" : "";
+const BASE_PATH = process.env.NODE_ENV === "production" ? "/samuel_kyere" : "";
 
 const aiChatbotPreview = `${BASE_PATH}/ai_bot.png`;
 
