@@ -1,13 +1,131 @@
 "use client";
 
+import projectsData from "./data/projects_data.json";
+import experienceData from "./data/experience_data.json";
+import articlesData from "./data/articles_data.json";
+
 const BASE_PATH = process.env.NODE_ENV === "production" ? "/samuel_kyere" : "";
 
-const aiChatbotPreview = `${BASE_PATH}/ai_bot.png`;
+/* ---------- Types for the JSON data files ---------- */
 
-const liveTrainingPreview = `${BASE_PATH}/project3.png`;
+type Theme = "violet" | "emerald" | "cyan";
 
-const dataSeedingPreview =
-  "https://raw.githubusercontent.com/admirerbrown/automated_data_seeding/main/assets/architecture.png";
+interface Project {
+  id: string;
+  title: string;
+  category: string;
+  badge: string;
+  theme: Theme;
+  accent?: Theme; // optional: colour of the category label and badge
+  image: string; // "/file.png" (public folder) or a full https:// URL
+  imageAlt: string;
+  stack: string[];
+  highlightsLabel?: string; // defaults to "Impact"
+  highlights: string[];
+  live?: string; // optional deployed site URL
+  liveLabel?: string; // defaults to "Live Site"
+  repo?: string;
+  demo?: string;
+  demoLabel?: string; // defaults to "Watch Demo"
+}
+
+interface Experience {
+  id: string;
+  featured?: boolean; // true = highlighted (latest) entry
+  commit: string;
+  authorName: string;
+  authorEmail: string;
+  dateRange: string;
+  role: string;
+  company: string;
+  summary: string;
+  bullets: string[];
+  tags: string[];
+  diffStat: string;
+}
+
+interface Article {
+  id: string;
+  category: string;
+  readTime: string;
+  theme: Theme;
+  title: string;
+  summary: string;
+  url: string;
+}
+
+const projects = projectsData as Project[];
+const experiences = experienceData as Experience[];
+const articles = articlesData as Article[];
+
+/* ---------- Theme maps (full class names so Tailwind can detect them) ---------- */
+
+const projectThemes: Record<
+  Theme,
+  { hover: string; shadow: string; glow: string; button: string }
+> = {
+  violet: {
+    hover: "hover:border-violet-500/50",
+    shadow: "shadow-[0_24px_90px_-40px_rgba(15,23,42,0.95)]",
+    glow: "bg-[radial-gradient(circle_at_top_left,rgba(129,140,248,0.18),transparent_30%)]",
+    button:
+      "border-violet-600/60 bg-violet-950/40 text-violet-200 hover:border-violet-500 hover:bg-violet-900/60",
+  },
+  emerald: {
+    hover: "hover:border-emerald-500/50",
+    shadow: "shadow-[0_24px_90px_-40px_rgba(16,185,129,0.16)]",
+    glow: "bg-[radial-gradient(circle_at_top_right,rgba(16,185,129,0.16),transparent_30%)]",
+    button:
+      "border-emerald-600/60 bg-emerald-950/40 text-emerald-200 hover:border-emerald-500 hover:bg-emerald-900/60",
+  },
+  cyan: {
+    hover: "hover:border-cyan-500/50",
+    shadow: "shadow-[0_24px_90px_-40px_rgba(34,211,238,0.16)]",
+    glow: "bg-[radial-gradient(circle_at_top,rgba(34,211,238,0.16),transparent_30%)]",
+    button:
+      "border-cyan-600/60 bg-cyan-950/40 text-cyan-200 hover:border-cyan-500 hover:bg-cyan-900/60",
+  },
+};
+
+const accentThemes: Record<Theme, { label: string; badge: string }> = {
+  violet: {
+    label: "text-violet-400",
+    badge: "border-violet-500/20 bg-violet-500/10 text-violet-300",
+  },
+  emerald: {
+    label: "text-emerald-400",
+    badge: "border-emerald-500/20 bg-emerald-500/10 text-emerald-300",
+  },
+  cyan: {
+    label: "text-cyan-400",
+    badge: "border-cyan-500/20 bg-cyan-500/10 text-cyan-300",
+  },
+};
+
+const articleThemes: Record<
+  Theme,
+  { hover: string; label: string; link: string }
+> = {
+  cyan: {
+    hover: "hover:border-cyan-500/40",
+    label: "text-cyan-400",
+    link: "text-cyan-300 hover:text-cyan-100",
+  },
+  violet: {
+    hover: "hover:border-violet-500/40",
+    label: "text-violet-400",
+    link: "text-violet-300 hover:text-violet-100",
+  },
+  emerald: {
+    hover: "hover:border-emerald-500/40",
+    label: "text-emerald-400",
+    link: "text-emerald-300 hover:text-emerald-100",
+  },
+};
+
+/* Local paths get the BASE_PATH prefix; full URLs and data URIs are used as is */
+const resolveSrc = (src: string) =>
+  /^(https?:|data:)/.test(src) ? src : `${BASE_PATH}${src}`;
 
 const automationPreview = `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(`
   <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720">
@@ -301,277 +419,102 @@ export default function Home() {
             </div>
 
             <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-              <article className="group relative h-full overflow-hidden rounded-2xl border border-slate-700/70 bg-gradient-to-br from-slate-900/90 via-slate-900/70 to-zinc-950/90 p-4 shadow-[0_24px_90px_-40px_rgba(15,23,42,0.95)] transition duration-300 hover:-translate-y-1 hover:border-violet-500/50 hover:bg-slate-900 glitch-card">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(129,140,248,0.18),transparent_30%)]" />
-                <div className="relative flex h-full flex-col gap-2.5">
-                  <div className="overflow-hidden rounded-xl border border-slate-800/80 bg-slate-950/70">
-                    <img
-                      src={aiChatbotPreview}
-                      alt="Screenshot of the FAQ-driven AI chatbot project"
-                      className="h-28 w-full object-cover transition duration-500 group-hover:scale-105"
-                    />
-                  </div>
+              {projects.map((project) => {
+                const theme =
+                  projectThemes[project.theme] ?? projectThemes.violet;
+                const accent =
+                  accentThemes[project.accent ?? project.theme] ??
+                  accentThemes.violet;
 
-                  <div className="flex items-center justify-between gap-3">
-                    <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-cyan-400">
-                      RAG / AI CHATBOT
-                    </span>
-                    <span className="rounded-full border border-cyan-500/20 bg-cyan-500/10 px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[0.16em] text-cyan-300">
-                      Systems Integration
-                    </span>
-                  </div>
+                return (
+                  <article
+                    key={project.id}
+                    className={`group relative h-full overflow-hidden rounded-2xl border border-slate-700/70 bg-gradient-to-br from-slate-900/90 via-slate-900/70 to-zinc-950/90 p-4 transition duration-300 hover:-translate-y-1 hover:bg-slate-900 glitch-card ${theme.shadow} ${theme.hover}`}
+                  >
+                    <div className={`absolute inset-0 ${theme.glow}`} />
+                    <div className="relative flex h-full flex-col gap-2.5">
+                      <div className="overflow-hidden rounded-xl border border-slate-800/80 bg-slate-950/70">
+                        <img
+                          src={resolveSrc(project.image)}
+                          alt={project.imageAlt}
+                          className="h-28 w-full object-cover transition duration-500 group-hover:scale-105"
+                        />
+                      </div>
 
-                  <h3 className="text-[17px] font-semibold leading-snug tracking-tight text-white">
-                    FAQ knowledge agent for web experiences
-                  </h3>
+                      <div className="flex items-center justify-between gap-3">
+                        <span
+                          className={`font-mono text-[10px] uppercase tracking-[0.16em] ${accent.label}`}
+                        >
+                          {project.category}
+                        </span>
+                        <span
+                          className={`rounded-full border px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[0.16em] ${accent.badge}`}
+                        >
+                          {project.badge}
+                        </span>
+                      </div>
 
-                  <div className="grid gap-2 rounded-xl border border-slate-800/80 bg-slate-950/60 p-2.5 sm:grid-cols-2">
-                    <div>
-                      <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-500">
-                        Core stack
-                      </p>
-                      <ul className="mt-1 space-y-0.5 text-[13px] leading-5 text-slate-300">
-                        <li>• Python + LangChain</li>
-                        <li>• ChromaDB vector search</li>
-                        <li>• n8n workflow automation</li>
-                      </ul>
+                      <h3 className="text-[17px] font-semibold leading-snug tracking-tight text-white">
+                        {project.title}
+                      </h3>
+
+                      <div className="grid gap-2 rounded-xl border border-slate-800/80 bg-slate-950/60 p-2.5 sm:grid-cols-2">
+                        {[
+                          { label: "Core stack", items: project.stack },
+                          {
+                            label: project.highlightsLabel ?? "Impact",
+                            items: project.highlights,
+                          },
+                        ].map((column) => (
+                          <div key={column.label}>
+                            <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-500">
+                              {column.label}
+                            </p>
+                            <ul className="mt-1 space-y-0.5 text-[13px] leading-5 text-slate-300">
+                              {column.items.map((item) => (
+                                <li key={item}>• {item}</li>
+                              ))}
+                            </ul>
+                          </div>
+                        ))}
+                      </div>
+
+                      <div className="mt-auto flex flex-wrap items-center gap-2 pt-2">
+                        {project.live && (
+                          <a
+                            href={project.live}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={`inline-flex items-center justify-center rounded-md border px-2.5 py-1 text-xs font-semibold transition ${theme.button}`}
+                          >
+                            {project.liveLabel ?? "Live Site"} ↗
+                          </a>
+                        )}
+                        {project.repo && (
+                          <a
+                            href={project.repo}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={`inline-flex items-center justify-center rounded-md border px-2.5 py-1 text-xs font-semibold transition ${theme.button}`}
+                          >
+                            View GitHub Repo
+                          </a>
+                        )}
+                        {project.demo && (
+                          <a
+                            href={project.demo}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center justify-center rounded-md border border-slate-700/70 bg-slate-900/70 px-2.5 py-1 text-xs font-semibold text-slate-200 transition hover:border-slate-500 hover:bg-slate-800"
+                          >
+                            {project.demoLabel ?? "Watch Demo"}
+                          </a>
+                        )}
+                      </div>
                     </div>
-                    <div>
-                      <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-500">
-                        Impact
-                      </p>
-                      <ul className="mt-1 space-y-0.5 text-[13px] leading-5 text-slate-300">
-                        <li>• &lt; 2s FAQ response time</li>
-                        <li>• 90%+ relevant answers</li>
-                        <li>• Easy PDF ingestion flow</li>
-                      </ul>
-                    </div>
-                  </div>
-
-                  <div className="mt-auto flex flex-wrap items-center gap-2 pt-2">
-                    <a
-                      href="https://github.com/admirerbrown/AI-chatbot"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center rounded-lg border border-violet-600/60 bg-violet-950/40 px-3 py-2 text-sm font-semibold text-violet-200 transition hover:border-violet-500 hover:bg-violet-900/60"
-                    >
-                      View GitHub Repo
-                    </a>
-                    <a
-                      href="https://drive.google.com/file/d/1rzq_0bF4m-tnse6y5DMj3vHGlid1gkNB/view?usp=drive_link"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center rounded-lg border border-slate-700/70 bg-slate-900/70 px-4 py-2 text-sm font-semibold text-slate-200 transition hover:border-slate-500 hover:bg-slate-800"
-                    >
-                      Watch Demo
-                    </a>
-                  </div>
-                </div>
-              </article>
-
-              <article className="group relative h-full overflow-hidden rounded-2xl border border-slate-700/70 bg-gradient-to-br from-slate-900/90 via-slate-900/70 to-zinc-950/90 p-4 shadow-[0_24px_90px_-40px_rgba(15,23,42,0.95)] transition duration-300 hover:-translate-y-1 hover:border-emerald-500/50 hover:bg-slate-900 glitch-card">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(16,185,129,0.16),transparent_30%)]" />
-                <div className="relative flex h-full flex-col gap-2.5">
-                  <div className="overflow-hidden rounded-xl border border-slate-800/80 bg-slate-950/70">
-                    <img
-                      src={`${BASE_PATH}/whatsapp.png`}
-                      alt="Workflow diagram for the WhatsApp lead qualification automation"
-                      className="h-28 w-full object-cover transition duration-500 group-hover:scale-105"
-                    />
-                  </div>
-
-                  <div className="flex items-center justify-between gap-3">
-                    <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-emerald-400">
-                      WHATSAPP / SALES AUTOMATION
-                    </span>
-                    <span className="rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[0.16em] text-emerald-300">
-                      Workflow Orchestration
-                    </span>
-                  </div>
-
-                  <h3 className="text-[17px] font-semibold leading-snug tracking-tight text-white">
-                    Stateful inbound lead qualification engine
-                  </h3>
-
-                  <div className="grid gap-2 rounded-xl border border-slate-800/80 bg-slate-950/60 p-2.5 sm:grid-cols-2">
-                    <div>
-                      <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-500">
-                        Core stack
-                      </p>
-                      <ul className="mt-1 space-y-0.5 text-[13px] leading-5 text-slate-300">
-                        <li>• n8n orchestration</li>
-                        <li>• LangChain + GPT-4o</li>
-                        <li>• Google Sheets memory</li>
-                      </ul>
-                    </div>
-                    <div>
-                      <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-500">
-                        Impact
-                      </p>
-                      <ul className="mt-1 space-y-0.5 text-[13px] leading-5 text-slate-300">
-                        <li>• ~70% manual workload reduction</li>
-                        <li>• Multi-modal awareness</li>
-                        <li>• Human handoff gate</li>
-                      </ul>
-                    </div>
-                  </div>
-
-                  <div className="mt-auto flex flex-wrap items-center gap-2 pt-2">
-                    <a
-                      href="https://github.com/admirerbrown/facebook_ad_whatsapp_inbound_automation"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center rounded-lg border border-emerald-600/60 bg-emerald-950/40 px-3 py-2 text-sm font-semibold text-emerald-200 transition hover:border-emerald-500 hover:bg-emerald-900/60"
-                    >
-                      View GitHub Repo
-                    </a>
-                    <a
-                      href="https://github.com/admirerbrown/facebook_ad_whatsapp_inbound_automation#readme"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center rounded-lg border border-slate-700/70 bg-slate-900/70 px-4 py-2 text-sm font-semibold text-slate-200 transition hover:border-slate-500 hover:bg-slate-800"
-                    >
-                      Watch Demo
-                    </a>
-                  </div>
-                </div>
-              </article>
-
-              <article className="group relative h-full overflow-hidden rounded-2xl border border-slate-700/70 bg-gradient-to-br from-slate-900/90 via-slate-900/70 to-zinc-950/90 p-4 shadow-[0_24px_90px_-40px_rgba(34,211,238,0.16)] transition duration-300 hover:-translate-y-1 hover:border-cyan-500/50 hover:bg-slate-900 glitch-card">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(34,211,238,0.16),transparent_30%)]" />
-                <div className="relative flex h-full flex-col gap-2.5">
-                  <div className="overflow-hidden rounded-xl border border-slate-800/80 bg-slate-950/70">
-                    <img
-                      src={dataSeedingPreview}
-                      alt="Architecture diagram for the client data seeding automation"
-                      className="h-28 w-full object-cover transition duration-500 group-hover:scale-105"
-                    />
-                  </div>
-
-                  <div className="flex items-center justify-between gap-3">
-                    <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-cyan-400">
-                      DATAOPS / SEEDING PIPELINE
-                    </span>
-                    <span className="rounded-full border border-cyan-500/20 bg-cyan-500/10 px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[0.16em] text-cyan-300">
-                      Production Automation
-                    </span>
-                  </div>
-
-                  <h3 className="text-[17px] font-semibold leading-snug tracking-tight text-white">
-                    Client data seeding automation
-                  </h3>
-
-                  <div className="grid gap-2 rounded-xl border border-slate-800/80 bg-slate-950/60 p-2.5 sm:grid-cols-2">
-                    <div>
-                      <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-500">
-                        Core stack
-                      </p>
-                      <ul className="mt-1 space-y-0.5 text-[13px] leading-5 text-slate-300">
-                        <li>• n8n workflow orchestration</li>
-                        <li>• Python + Node.js processing</li>
-                        <li>• Slack, Confluence + Drive APIs</li>
-                      </ul>
-                    </div>
-                    <div>
-                      <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-500">
-                        Impact
-                      </p>
-                      <ul className="mt-1 space-y-0.5 text-[13px] leading-5 text-slate-300">
-                        <li>• 85% analyst effort reduction</li>
-                        <li>• 100% Confluence status updates</li>
-                        <li>• Auditable run logs</li>
-                      </ul>
-                    </div>
-                  </div>
-
-                  <div className="mt-auto flex flex-wrap items-center gap-2 pt-2">
-                    <a
-                      href="https://github.com/admirerbrown/automated_data_seeding"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center rounded-lg border border-cyan-600/60 bg-cyan-950/40 px-3 py-2 text-sm font-semibold text-cyan-200 transition hover:border-cyan-500 hover:bg-cyan-900/60"
-                    >
-                      View GitHub Repo
-                    </a>
-                    <a
-                      href="https://drive.google.com/file/d/1WKuH7R5j5fHHXBaAp302QaRSE1Wpz2Ks/view?usp=sharing"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center rounded-lg border border-slate-700/70 bg-slate-900/70 px-4 py-2 text-sm font-semibold text-slate-200 transition hover:border-slate-500 hover:bg-slate-800"
-                    >
-                      Watch Demo
-                    </a>
-                  </div>
-                </div>
-              </article>
-
-              <article className="group order-first relative h-full overflow-hidden rounded-2xl border border-slate-700/70 bg-gradient-to-br from-slate-900/90 via-slate-900/70 to-zinc-950/90 p-4 shadow-[0_24px_90px_-40px_rgba(16,185,129,0.16)] transition duration-300 hover:-translate-y-1 hover:border-emerald-500/50 hover:bg-slate-900 glitch-card">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(16,185,129,0.16),transparent_30%)]" />
-                <div className="relative flex h-full flex-col gap-2.5">
-                  <div className="overflow-hidden rounded-xl border border-slate-800/80 bg-slate-950/70">
-                    <img
-                      src={liveTrainingPreview}
-                      alt="Instructor workspace for the corporate live training platform"
-                      className="h-28 w-full object-cover transition duration-500 group-hover:scale-105"
-                    />
-                  </div>
-
-                  <div className="flex items-center justify-between gap-3">
-                    <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-emerald-400">
-                      REAL-TIME / LEARNING PLATFORM
-                    </span>
-                    <span className="rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[0.16em] text-emerald-300">
-                      WebSocket Systems
-                    </span>
-                  </div>
-
-                  <h3 className="text-[17px] font-semibold leading-snug tracking-tight text-white">
-                    Corporate live training platform
-                  </h3>
-
-                  <div className="grid gap-2 rounded-xl border border-slate-800/80 bg-slate-950/60 p-2.5 sm:grid-cols-2">
-                    <div>
-                      <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-500">
-                        Core stack
-                      </p>
-                      <ul className="mt-1 space-y-0.5 text-[13px] leading-5 text-slate-300">
-                        <li>• React + Vite frontend</li>
-                        <li>• Node.js + Express API</li>
-                        <li>• WebSockets + PostgreSQL</li>
-                      </ul>
-                    </div>
-                    <div>
-                      <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-500">
-                        Key capabilities
-                      </p>
-                      <ul className="mt-1 space-y-0.5 text-[13px] leading-5 text-slate-300">
-                        <li>• Instructor-led playback control</li>
-                        <li>• Late-join state recovery</li>
-                        <li>• Clock drift correction</li>
-                      </ul>
-                    </div>
-                  </div>
-
-                  <div className="mt-auto flex flex-wrap items-center gap-2 pt-2">
-                    <a
-                      href="https://github.com/admirerbrown/coporate_live_training_platform"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center rounded-lg border border-emerald-600/60 bg-emerald-950/40 px-3 py-2 text-sm font-semibold text-emerald-200 transition hover:border-emerald-500 hover:bg-emerald-900/60"
-                    >
-                      View GitHub Repo
-                    </a>
-                    <a
-                      href="https://www.loom.com/share/9f5c7e9fcbf44673a7fc8e114ac44b4a"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center rounded-lg border border-slate-700/70 bg-slate-900/70 px-4 py-2 text-sm font-semibold text-slate-200 transition hover:border-slate-500 hover:bg-slate-800"
-                    >
-                      Watch Demo
-                    </a>
-                  </div>
-                </div>
-              </article>
+                  </article>
+                );
+              })}
             </div>
           </div>
         </div>
@@ -770,157 +713,74 @@ export default function Home() {
           </div>
 
           <div className="space-y-5 border-l border-slate-800 pl-5 sm:pl-8">
-            <article className="relative border border-slate-800/80 bg-slate-900/50 p-5 shadow-[0_18px_60px_-38px_rgba(15,23,42,0.9)] glitch-card">
-              <span className="absolute -left-[29px] top-6 h-3 w-3 rounded-full border-2 border-emerald-400 bg-slate-950 sm:-left-[41px]" />
-              <div className="font-mono text-xs leading-6 text-slate-400">
-                <p className="text-emerald-400">commit 7f3a91c</p>
-                <p>Author: Samuel Kyere &lt;visual@alpha.com&gt;</p>
-                <p>Date: Jan 2023 - Jan 2026</p>
-              </div>
-              <h3 className="mt-4 font-mono text-base font-semibold text-violet-400">
-                feat(experience): Software and automation Engineer @ Visual
-                Alpha
-              </h3>
-              <p>
-                Owned the engineering and automation layer across data pipelines
-                and AI-assisted tooling, taking systems from ingestion and
-                processing through validation and quality control.
-              </p>
-              <ul className="mt-4 space-y-1.5 text-sm leading-relaxed text-slate-400">
-                <li>
-                  • Architected and maintained Python-based data pipelines and
-                  AI agent workflows as the sole engineer on the codebase.
-                </li>
-                <li>
-                  • Automated 40–85% of previously manual operational workflows,
-                  reducing repetitive work while maintaining production
-                  reliability.
-                </li>
-                <li>
-                  • Built validation and quality-control mechanisms that
-                  improved consistency across data processing workflows.
-                </li>
-              </ul>
-              <div className="mt-4 flex flex-wrap gap-2">
-                <span className="rounded-full border border-dashed border-amber-400/60 bg-amber-400/5 px-2.5 py-1 font-mono text-[11px] text-amber-200">
-                  Python
-                </span>
-                <span className="rounded-full border border-dashed border-amber-400/60 bg-amber-400/5 px-2.5 py-1 font-mono text-[11px] text-amber-200">
-                  Node.js
-                </span>
-                <span className="rounded-full border border-dashed border-amber-400/60 bg-amber-400/5 px-2.5 py-1 font-mono text-[11px] text-amber-200">
-                  Git
-                </span>
-                <span className="rounded-full border border-dashed border-amber-400/60 bg-amber-400/5 px-2.5 py-1 font-mono text-[11px] text-amber-200">
-                  MySQL
-                </span>
-              </div>
-              <div className="mt-5 border-t border-slate-800 pt-4 font-mono text-xs leading-6 text-slate-500">
-                <p className="mt-2 text-slate-400">
-                  3 files changed, 214 insertions(+), 58 deletions(-)
-                </p>
-              </div>
-            </article>
+            {experiences.map((job) => {
+              const featured = Boolean(job.featured);
+              const tagClass = featured
+                ? "border-amber-400/60 text-amber-200"
+                : "border-amber-400/50 text-amber-200/80";
 
-            <article className="relative border border-dashed border-slate-700/80 bg-slate-900/30 p-5">
-              <span className="absolute -left-[29px] top-6 h-3 w-3 rounded-full border-2 border-slate-600 bg-slate-950 sm:-left-[41px]" />
-              <div className="font-mono text-xs leading-6 text-slate-500">
-                <p>commit 4d82c6e</p>
-                <p>Author: Samuel Kyere &lt;samuelkyere@microverse.com&gt;</p>
-                <p>Date: March 2022 - Dec 2022</p>
-              </div>
-              <p className="mt-4 font-mono text-sm text-violet-400">
-                feat(experience): Code Reviewer @ Microverse
-              </p>
-              <p>
-                Evaluated production-style applications and capstone projects
-                against technical specifications, code-quality standards, and
-                architectural requirements.
-              </p>
-              <ul className="mt-4 space-y-1.5 text-sm leading-relaxed text-slate-400">
-                <li>
-                  • Conducted structured code reviews across React, Redux, Ruby
-                  on Rails, and PostgreSQL projects, identifying implementation,
-                  architectural, and specification issues.
-                </li>
-                <li>
-                  • Provided actionable technical feedback that guided
-                  developers toward maintainable, specification-compliant
-                  solutions.
-                </li>
-                <li>
-                  • Evaluated and approved final capstone submissions against
-                  defined engineering and quality standards.
-                </li>
-              </ul>
-              <div className="mt-4 flex flex-wrap gap-2">
-                <span className="rounded-full border border-dashed border-amber-400/50 bg-amber-400/5 px-2.5 py-1 font-mono text-[11px] text-amber-200/80">
-                  React
-                </span>
-                <span className="rounded-full border border-dashed border-amber-400/50 bg-amber-400/5 px-2.5 py-1 font-mono text-[11px] text-amber-200/80">
-                  Redux
-                </span>
-                <span className="rounded-full border border-dashed border-amber-400/50 bg-amber-400/5 px-2.5 py-1 font-mono text-[11px] text-amber-200/80">
-                  Ruby on Rails
-                </span>
-                <span className="rounded-full border border-dashed border-amber-400/50 bg-amber-400/5 px-2.5 py-1 font-mono text-[11px] text-amber-200/80">
-                  PostgreSQL
-                </span>
-              </div>
-              <p className="mt-4 font-mono text-xs text-slate-600">
-                6 files changed, 142 insertions(+), 37 deletions(-)
-              </p>
-            </article>
-
-            <article className="relative border border-dashed border-slate-700/80 bg-slate-900/30 p-5">
-              <span className="absolute -left-[29px] top-6 h-3 w-3 rounded-full border-2 border-slate-600 bg-slate-950 sm:-left-[41px]" />
-              <div className="font-mono text-xs leading-6 text-slate-500">
-                <p>commit 2b88e4d</p>
-                <p>Author: Samuel Kyere &lt;samuel@eziticket.com&gt;</p>
-                <p>Date: Apr 2021 - Dec 2021</p>
-              </div>
-              <p className="mt-4 font-mono text-sm text-violet-400">
-                feat(experience): Backend Engineer @ eziticket
-              </p>
-              <p>
-                Designed and built the backend infrastructure for a mobile
-                ticketing MVP, translating insights from user interviews at bus
-                terminals into a functional booking and ticketing system.
-              </p>
-              <ul className="mt-4 space-y-1.5 text-sm leading-relaxed text-slate-400">
-                <li>
-                  • Built the Node.js backend and REST APIs supporting the
-                  Flutter mobile application.
-                </li>
-                <li>
-                  • Designed data models and backend services using Node.js and
-                  MongoDB to support ticketing and booking workflows.
-                </li>
-                <li>
-                  • Took the product from concept to working MVP within six
-                  months, validating the product against real-world user demand
-                  before discontinuing it due to insufficient commercial
-                  traction.
-                </li>
-              </ul>
-              <div className="mt-4 flex flex-wrap gap-2">
-                <span className="rounded-full border border-dashed border-amber-400/50 bg-amber-400/5 px-2.5 py-1 font-mono text-[11px] text-amber-200/80">
-                  Flutter
-                </span>
-                <span className="rounded-full border border-dashed border-amber-400/50 bg-amber-400/5 px-2.5 py-1 font-mono text-[11px] text-amber-200/80">
-                  Node.js
-                </span>
-                <span className="rounded-full border border-dashed border-amber-400/50 bg-amber-400/5 px-2.5 py-1 font-mono text-[11px] text-amber-200/80">
-                  Express.js
-                </span>
-                <span className="rounded-full border border-dashed border-amber-400/50 bg-amber-400/5 px-2.5 py-1 font-mono text-[11px] text-amber-200/80">
-                  MongoDB
-                </span>
-              </div>
-              <p className="mt-4 font-mono text-xs text-slate-600">
-                5 files changed, 168 insertions(+), 22 deletions(-)
-              </p>
-            </article>
+              return (
+                <article
+                  key={job.id}
+                  className={
+                    featured
+                      ? "relative border border-slate-800/80 bg-slate-900/50 p-5 shadow-[0_18px_60px_-38px_rgba(15,23,42,0.9)] glitch-card"
+                      : "relative border border-dashed border-slate-700/80 bg-slate-900/30 p-5"
+                  }
+                >
+                  <span
+                    className={`absolute -left-[29px] top-6 h-3 w-3 rounded-full border-2 bg-slate-950 sm:-left-[41px] ${
+                      featured ? "border-emerald-400" : "border-slate-600"
+                    }`}
+                  />
+                  <div
+                    className={`font-mono text-xs leading-6 ${
+                      featured ? "text-slate-400" : "text-slate-500"
+                    }`}
+                  >
+                    <p className={featured ? "text-emerald-400" : undefined}>
+                      commit {job.commit}
+                    </p>
+                    <p>
+                      Author: {job.authorName} &lt;{job.authorEmail}&gt;
+                    </p>
+                    <p>Date: {job.dateRange}</p>
+                  </div>
+                  <h3
+                    className={`font-mono text-violet-400 ${
+                      featured ? "mt-4 text-base font-semibold" : "mt-4 text-sm"
+                    }`}
+                  >
+                    feat(experience): {job.role} @ {job.company}
+                  </h3>
+                  <p>{job.summary}</p>
+                  <ul className="mt-4 space-y-1.5 text-sm leading-relaxed text-slate-400">
+                    {job.bullets.map((bullet) => (
+                      <li key={bullet}>• {bullet}</li>
+                    ))}
+                  </ul>
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    {job.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className={`rounded-full border border-dashed bg-amber-400/5 px-2.5 py-1 font-mono text-[11px] ${tagClass}`}
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                  {featured ? (
+                    <div className="mt-5 border-t border-slate-800 pt-4 font-mono text-xs leading-6 text-slate-500">
+                      <p className="mt-2 text-slate-400">{job.diffStat}</p>
+                    </div>
+                  ) : (
+                    <p className="mt-4 font-mono text-xs text-slate-600">
+                      {job.diffStat}
+                    </p>
+                  )}
+                </article>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -947,70 +807,36 @@ export default function Home() {
           </div>
 
           <div className="grid gap-4 md:grid-cols-3">
-            <article className="flex min-h-60 flex-col rounded-xl border border-slate-800/80 bg-slate-900/40 p-5 transition hover:border-cyan-500/40 hover:bg-slate-900/70 glitch-card">
-              <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-cyan-400">
-                Integration Patterns · 3 min read
-              </p>
-              <h3 className="mt-3 text-lg font-semibold text-slate-200">
-                Webhook vs. API: Understanding the difference and when to use
-                each one
-              </h3>
-              <p className="mt-2 text-sm leading-relaxed text-slate-400">
-                A practical guide to choosing pull-based APIs or event-driven
-                webhooks based on how a system&apos;s data changes.
-              </p>
-              <a
-                href="https://medium.com/techtrends-digest/webhook-vs-api-understanding-the-difference-and-when-to-use-each-one-93cf4aefccc6?sharedUserId=mr.kyere.s"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-auto pt-5 font-mono text-xs font-semibold uppercase tracking-[0.14em] text-cyan-300 transition hover:text-cyan-100"
-              >
-                Read article →
-              </a>
-            </article>
+            {articles.map((article) => {
+              const theme = articleThemes[article.theme] ?? articleThemes.cyan;
 
-            <article className="flex min-h-60 flex-col rounded-xl border border-slate-800/80 bg-slate-900/40 p-5 transition hover:border-violet-500/40 hover:bg-slate-900/70 glitch-card">
-              <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-violet-400">
-                JavaScript Fundamentals · 4 min read
-              </p>
-              <h3 className="mt-3 text-lg font-semibold text-slate-200">
-                Understanding “not defined” and “undefined” in JavaScript
-              </h3>
-              <p className="mt-2 text-sm leading-relaxed text-slate-400">
-                A clear walkthrough of reference errors, scope, declared values,
-                and the debugging difference between these two terms.
-              </p>
-              <a
-                href="https://medium.com/techtrends-digest/understanding-the-difference-between-not-defined-and-undefined-as-a-javascript-developer-cd16fe0e487?sharedUserId=mr.kyere.s"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-auto pt-5 font-mono text-xs font-semibold uppercase tracking-[0.14em] text-violet-300 transition hover:text-violet-100"
-              >
-                Read article →
-              </a>
-            </article>
-
-            <article className="flex min-h-60 flex-col rounded-xl border border-slate-800/80 bg-slate-900/40 p-5 transition hover:border-emerald-500/40 hover:bg-slate-900/70 glitch-card">
-              <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-emerald-400">
-                AI Systems · 8 min read
-              </p>
-              <h3 className="mt-3 text-lg font-semibold text-slate-200">
-                The Shift from Deterministic Automation to Probabilistic
-                Automation
-              </h3>
-              <p className="mt-2 text-sm leading-relaxed text-slate-400">
-                Why reliable workflows need different design choices when the
-                task moves from repeatable execution to judgment and ambiguity.
-              </p>
-              <a
-                href="https://pub.towardsai.net/the-shift-from-deterministic-automation-to-probabilistic-automation-7d99b115116e?sharedUserId=mr.kyere.s"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-auto pt-5 font-mono text-xs font-semibold uppercase tracking-[0.14em] text-emerald-300 transition hover:text-emerald-100"
-              >
-                Read article →
-              </a>
-            </article>
+              return (
+                <article
+                  key={article.id}
+                  className={`flex min-h-60 flex-col rounded-xl border border-slate-800/80 bg-slate-900/40 p-5 transition hover:bg-slate-900/70 glitch-card ${theme.hover}`}
+                >
+                  <p
+                    className={`font-mono text-[11px] uppercase tracking-[0.16em] ${theme.label}`}
+                  >
+                    {article.category} · {article.readTime}
+                  </p>
+                  <h3 className="mt-3 text-lg font-semibold text-slate-200">
+                    {article.title}
+                  </h3>
+                  <p className="mt-2 text-sm leading-relaxed text-slate-400">
+                    {article.summary}
+                  </p>
+                  <a
+                    href={article.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`mt-auto pt-5 font-mono text-xs font-semibold uppercase tracking-[0.14em] transition ${theme.link}`}
+                  >
+                    Read article →
+                  </a>
+                </article>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -1063,7 +889,7 @@ export default function Home() {
         <div className="mx-auto flex max-w-7xl flex-col gap-2 font-mono text-xs text-slate-400 sm:flex-row sm:items-center sm:justify-between">
           <p>samuel@systems:~$ portfolio --status active</p>
           <p className="text-slate-500">
-            © {new Date().getFullYear()} Samuel Kyere
+            © {new Date().getFullYear()} Samuel N. Kyere
           </p>
         </div>
       </footer>

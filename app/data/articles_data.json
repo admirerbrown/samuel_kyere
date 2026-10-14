@@ -1,0 +1,29 @@
+[
+  {
+    "id": "webhook-vs-api",
+    "category": "Integration Patterns",
+    "readTime": "3 min read",
+    "theme": "cyan",
+    "title": "Webhook vs. API: Understanding the difference and when to use each one",
+    "summary": "A practical guide to choosing pull-based APIs or event-driven webhooks based on how a system's data changes.",
+    "url": "https://medium.com/techtrends-digest/webhook-vs-api-understanding-the-difference-and-when-to-use-each-one-93cf4aefccc6?sharedUserId=mr.kyere.s"
+  },
+  {
+    "id": "not-defined-vs-undefined",
+    "category": "JavaScript Fundamentals",
+    "readTime": "4 min read",
+    "theme": "violet",
+    "title": "Understanding “not defined” and “undefined” in JavaScript",
+    "summary": "A clear walkthrough of reference errors, scope, declared values, and the debugging difference between these two terms.",
+    "url": "https://medium.com/techtrends-digest/understanding-the-difference-between-not-defined-and-undefined-as-a-javascript-developer-cd16fe0e487?sharedUserId=mr.kyere.s"
+  },
+  {
+    "id": "deterministic-to-probabilistic",
+    "category": "AI Systems",
+    "readTime": "8 min read",
+    "theme": "emerald",
+    "title": "The Shift from Deterministic Automation to Probabilistic Automation",
+    "summary": "Why reliable workflows need different design choices when the task moves from repeatable execution to judgment and ambiguity.",
+    "url": "https://pub.towardsai.net/the-shift-from-deterministic-automation-to-probabilistic-automation-7d99b115116e?sharedUserId=mr.kyere.s"
+  }
+]

@@ -1,0 +1,54 @@
+[
+  {
+    "id": "visual-alpha",
+    "featured": true,
+    "commit": "7f3a91c",
+    "authorName": "Samuel Kyere",
+    "authorEmail": "visual@alpha.com",
+    "dateRange": "Jan 2023 - Jan 2026",
+    "role": "Software and automation Engineer",
+    "company": "Visual Alpha",
+    "summary": "Owned the engineering and automation layer across data pipelines and AI-assisted tooling, taking systems from ingestion and processing through validation and quality control.",
+    "bullets": [
+      "Architected and maintained Python-based data pipelines and AI agent workflows as the sole engineer on the codebase.",
+      "Automated 40–85% of previously manual operational workflows, reducing repetitive work while maintaining production reliability.",
+      "Built validation and quality-control mechanisms that improved consistency across data processing workflows."
+    ],
+    "tags": ["Python", "Node.js", "Git", "MySQL"],
+    "diffStat": "3 files changed, 214 insertions(+), 58 deletions(-)"
+  },
+  {
+    "id": "microverse",
+    "commit": "4d82c6e",
+    "authorName": "Samuel Kyere",
+    "authorEmail": "samuelkyere@microverse.com",
+    "dateRange": "March 2022 - Dec 2022",
+    "role": "Code Reviewer",
+    "company": "Microverse",
+    "summary": "Evaluated production-style applications and capstone projects against technical specifications, code-quality standards, and architectural requirements.",
+    "bullets": [
+      "Conducted structured code reviews across React, Redux, Ruby on Rails, and PostgreSQL projects, identifying implementation, architectural, and specification issues.",
+      "Provided actionable technical feedback that guided developers toward maintainable, specification-compliant solutions.",
+      "Evaluated and approved final capstone submissions against defined engineering and quality standards."
+    ],
+    "tags": ["React", "Redux", "Ruby on Rails", "PostgreSQL"],
+    "diffStat": "6 files changed, 142 insertions(+), 37 deletions(-)"
+  },
+  {
+    "id": "eziticket",
+    "commit": "2b88e4d",
+    "authorName": "Samuel Kyere",
+    "authorEmail": "samuel@eziticket.com",
+    "dateRange": "Apr 2021 - Dec 2021",
+    "role": "Backend Engineer",
+    "company": "eziticket",
+    "summary": "Designed and built the backend infrastructure for a mobile ticketing MVP, translating insights from user interviews at bus terminals into a functional booking and ticketing system.",
+    "bullets": [
+      "Built the Node.js backend and REST APIs supporting the Flutter mobile application.",
+      "Designed data models and backend services using Node.js and MongoDB to support ticketing and booking workflows.",
+      "Took the product from concept to working MVP within six months, validating the product against real-world user demand before discontinuing it due to insufficient commercial traction."
+    ],
+    "tags": ["Flutter", "Node.js", "Express.js", "MongoDB"],
+    "diffStat": "5 files changed, 168 insertions(+), 22 deletions(-)"
+  }
+]

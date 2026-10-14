@@ -1,0 +1,118 @@
+[
+  {
+    "id": "corporate-live-training",
+    "title": "Corporate live training platform",
+    "live": "https://your-live-site.com",
+    "category": "REAL-TIME / LEARNING PLATFORM",
+    "badge": "WebSocket Systems",
+    "theme": "emerald",
+    "image": "/project3.png",
+    "imageAlt": "Instructor workspace for the corporate live training platform",
+    "stack": [
+      "React + Vite frontend",
+      "Node.js + Express API",
+      "WebSockets + PostgreSQL"
+    ],
+    "highlightsLabel": "Key capabilities",
+    "highlights": [
+      "Instructor-led playback control",
+      "Late-join state recovery",
+      "Clock drift correction"
+    ],
+    "repo": "https://github.com/admirerbrown/coporate_live_training_platform",
+    "demo": "https://www.loom.com/share/9f5c7e9fcbf44673a7fc8e114ac44b4a"
+  },
+  {
+    "id": "therapist-booking-system",
+    "title": "Spa Booking System",
+    "live": "https://admirerbrown.github.io/spa_booking_service/",
+    "category": "BOOKING SYSTEM / FULL-STACK",
+    "badge": "serverless",
+    "theme": "emerald",
+    "image": "/spa-book.png",
+    "imageAlt": "Landing page of a spa booking app with a massage treatment hero image",
+    "stack": [
+      "React + Vite frontend, Tailwind",
+      "Supabase (Postgres, row-level security)",
+      "Vitest, built test-first"
+    ],
+    "highlightsLabel": "Key capabilities",
+    "highlights": [
+      "Double-booking protection with per-therapist locking",
+      "Timed slot holds that expire automatically",
+      "Refresh recovery that resumes an in-progress booking"
+    ],
+    "repo": "https://github.com/admirerbrown/spa_booking_service",
+    "demo": "https://www.loom.com/share/9f5c7e9fcbf44673a7fc8e114ac44b4a"
+  },
+  {
+    "id": "faq-knowledge-agent",
+    "title": "FAQ knowledge agent for web experiences",
+    "live": "",
+    "category": "RAG / AI CHATBOT",
+    "badge": "Systems Integration",
+    "theme": "violet",
+    "accent": "cyan",
+    "image": "/ai_bot.png",
+    "imageAlt": "Screenshot of the FAQ-driven AI chatbot project",
+    "stack": [
+      "Python + LangChain",
+      "ChromaDB vector search",
+      "n8n workflow automation"
+    ],
+    "highlightsLabel": "Impact",
+    "highlights": [
+      "< 2s FAQ response time",
+      "90%+ relevant answers",
+      "Easy PDF ingestion flow"
+    ],
+    "repo": "https://github.com/admirerbrown/AI-chatbot",
+    "demo": "https://drive.google.com/file/d/1rzq_0bF4m-tnse6y5DMj3vHGlid1gkNB/view?usp=drive_link"
+  },
+  {
+    "id": "whatsapp-lead-qualification",
+    "title": "Stateful inbound lead qualification engine",
+    "live": "",
+    "category": "WHATSAPP / SALES AUTOMATION",
+    "badge": "Workflow Orchestration",
+    "theme": "emerald",
+    "image": "/whatsapp.png",
+    "imageAlt": "Workflow diagram for the WhatsApp lead qualification automation",
+    "stack": [
+      "n8n orchestration",
+      "LangChain + GPT-4o",
+      "Google Sheets memory"
+    ],
+    "highlightsLabel": "Impact",
+    "highlights": [
+      "~70% manual workload reduction",
+      "Multi-modal awareness",
+      "Human handoff gate"
+    ],
+    "repo": "https://github.com/admirerbrown/facebook_ad_whatsapp_inbound_automation",
+    "demo": "https://github.com/admirerbrown/facebook_ad_whatsapp_inbound_automation#readme"
+  },
+  {
+    "id": "client-data-seeding",
+    "title": "Client data seeding automation",
+    "live": "",
+    "category": "DATAOPS / SEEDING PIPELINE",
+    "badge": "Production Automation",
+    "theme": "cyan",
+    "image": "https://raw.githubusercontent.com/admirerbrown/automated_data_seeding/main/assets/architecture.png",
+    "imageAlt": "Architecture diagram for the client data seeding automation",
+    "stack": [
+      "n8n workflow orchestration",
+      "Python + Node.js processing",
+      "Slack, Confluence + Drive APIs"
+    ],
+    "highlightsLabel": "Impact",
+    "highlights": [
+      "85% analyst effort reduction",
+      "100% Confluence status updates",
+      "Auditable run logs"
+    ],
+    "repo": "https://github.com/admirerbrown/automated_data_seeding",
+    "demo": "https://drive.google.com/file/d/1WKuH7R5j5fHHXBaAp302QaRSE1Wpz2Ks/view?usp=sharing"
+  }
+]
