@@ -2,7 +2,7 @@
   {
     "id": "corporate-live-training",
     "title": "Corporate live training platform",
-    "live": "https://your-live-site.com",
+    "live": "",
     "category": "REAL-TIME / LEARNING PLATFORM",
     "badge": "WebSocket Systems",
     "theme": "emerald",
@@ -43,7 +43,7 @@
       "Refresh recovery that resumes an in-progress booking"
     ],
     "repo": "https://github.com/admirerbrown/spa_booking_service",
-    "demo": "https://www.loom.com/share/9f5c7e9fcbf44673a7fc8e114ac44b4a"
+    "demo": ""
   },
   {
     "id": "faq-knowledge-agent",
