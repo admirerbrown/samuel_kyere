@@ -889,7 +889,7 @@ export default function Home() {
         <div className="mx-auto flex max-w-7xl flex-col gap-2 font-mono text-xs text-slate-400 sm:flex-row sm:items-center sm:justify-between">
           <p>samuel@systems:~$ portfolio --status active</p>
           <p className="text-slate-500">
-            © {new Date().getFullYear()} Samuel N. Kyere
+            © {new Date().getFullYear()} Samuel Kyere
           </p>
         </div>
       </footer>
